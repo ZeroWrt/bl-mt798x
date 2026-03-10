@@ -1,39 +1,64 @@
 <!DOCTYPE HTML>
 <html>
-	<head>
-		<meta charset="utf-8">
-		<title>正在启动 initramfs</title>
-		<link rel="stylesheet" href="/style.css">
-		<script src="/main.js"></script>
-		<script>
-			function init() {
-				getversion();
-
-				ajax({
-					url: '/result',
-					done: function(response) {
-						if (response == 'failed') {
-							location = '/fail.html'
-							return
-						}
-
-						document.getElementById('title').innerHTML = '启动成功'
-						document.getElementById('info').innerHTML = '您的设备已成功启动并进入 initramfs!'
-					},
-					timeout: 30000
-				})
-			}
-		</script>
-	</head>
-	<body onload="init()">
-		<div id="m">
-			<h1 id="title">正在启动 INITRAMFS</h1>
-			<p id="info">
-				您的文件已成功上传！启动正在进行中，请稍候...<br>
-				本页面可能在短时间内无响应。
-			</p>
-			<div id="l"></div>
-		</div>
-		<div id="version"></div>
-	</body>
+<head>
+  <meta charset="utf-8">
+  <title>正在启动 initramfs</title>
+  <link rel="stylesheet" href="/style.css">
+  <script src="/main.js"></script>
+</head>
+<body onload="init()">
+  <div class="app-container">
+    <header class="header">
+      <div class="header-left">
+        <div class="logo">📱</div>
+        <div class="brand">
+          <span class="brand-name">联发科工具</span>
+          <span class="brand-tagline">MediaTek Firmware Tool</span>
+        </div>
+      </div>
+      
+      <nav class="header-center">
+        <div class="nav-links">
+          <a href="/" class="nav-link">
+            <span class="nav-icon">📦</span>
+            <span class="nav-text">固件更新</span>
+          </a>
+          <a href="/uboot.html" class="nav-link">
+            <span class="nav-icon">🚀</span>
+            <span class="nav-text">U-Boot 更新</span>
+          </a>
+          <a href="/gpt.html" class="nav-link">
+            <span class="nav-icon">💾</span>
+            <span class="nav-text">GPT 更新</span>
+          </a>
+          <a href="/initramfs.html" class="nav-link">
+            <span class="nav-icon">📁</span>
+            <span class="nav-text">加载 Initramfs</span>
+          </a>
+          <a href="/bl2.html" class="nav-link">
+            <span class="nav-icon">⚡</span>
+            <span class="nav-text">BL2 更新</span>
+          </a>
+        </div>
+      </nav>
+      
+      <div class="header-right"></div>
+    </header>
+    
+    <main class="main-content">
+      <div class="form-card" style="text-align: center; padding: 60px 40px;">
+        <div class="loader" style="margin: 0 auto 30px; border-top-color: var(--success-color);"></div>
+        <h2 class="form-title" id="title">正在启动 INITRAMFS</h2>
+        <p class="form-desc" id="info">
+          您的文件已成功上传！启动正在进行中，请稍候...<br>
+          本页面可能在短时间内无响应。
+        </p>
+        <p style="color: var(--text-secondary); animation: pulse 2s infinite; margin-top: 20px;">正在启动，请稍候...</p>
+      </div>
+    </main>
+    
+    <div id="version"></div>
+    <div class="footer">Copyright © 2026 bl-mt798x by MomoFlora</div>
+  </div>
+</body>
 </html>

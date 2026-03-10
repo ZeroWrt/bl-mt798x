@@ -1,38 +1,113 @@
 <!DOCTYPE HTML>
 <html>
-	<head>
-		<meta charset="utf-8">
-		<title>BL2 更新</title>
-		<link rel="stylesheet" href="/style.css">
-		<script src="/main.js"></script>
-	</head>
-	<body onload="getversion()">
-		<div id="m">
-			<h1>BL2 更新</h1>
-			<p id="hint">您将在这台设备上更新 <strong>BL2 引导加载程序</strong> <br>请从本地硬盘中选择文件，然后单击 <strong>更新</strong> 按钮.</p>
-			<form id="form">
-				<input id="file" type="file" name="bl2">
-				<input type="button" value="上传" onclick="upload('bl2')">
-			</form>
-			<div>
-				<div class="bar" id="bar" style="display: none; --percent: 0;"></div>
-			</div>
-			<div id="size" style="display: none;">镜像大小: xxxx</div>
-			<div id="md5" style="display: none;">MD5: xxxx</div>
-			<div id="upgrade" style="display: none;">
-				<p>bl2 已上传，请点击"更新"</p>
-				<button class="button" onclick="location = '/flashing.html'">更新</button>
-			</div>
-			<div class="i w">
-				<strong>警告</strong>
-				<ul>
-					<li>更新期间不要关闭设备电源</li>
-					<li>如果一切顺利，设备将重新启动</li>
-					<li>你可以上传任何你想要的东西，所以一定要为你的设备选择合适的 U-Boot</li>
-					<li>更新BL2是一项非常危险的操作，可能会损坏您的设备!</li>
-				</ul>
-			</div>
-		</div>
-        <div id="version"></div>
-	</body>
+<head>
+  <meta charset="utf-8">
+  <title>BL2 更新</title>
+  <link rel="stylesheet" href="/style.css">
+  <script src="/main.js"></script>
+</head>
+<body data-page="bl2" onload="startup()">
+  <div class="app-container">
+    <header class="header">
+      <div class="header-left">
+        <div class="logo">📱</div>
+        <div class="brand">
+          <span class="brand-name">联发科工具</span>
+          <span class="brand-tagline">MediaTek Firmware Tool</span>
+        </div>
+      </div>
+      
+      <nav class="header-center">
+        <div class="nav-links">
+          <a href="/" class="nav-link">
+            <span class="nav-icon">📦</span>
+            <span class="nav-text">固件更新</span>
+          </a>
+          <a href="/uboot.html" class="nav-link">
+            <span class="nav-icon">🚀</span>
+            <span class="nav-text">U-Boot 更新</span>
+          </a>
+          <a href="/gpt.html" class="nav-link">
+            <span class="nav-icon">💾</span>
+            <span class="nav-text">GPT 更新</span>
+          </a>
+          <a href="/initramfs.html" class="nav-link">
+            <span class="nav-icon">📁</span>
+            <span class="nav-text">加载 Initramfs</span>
+          </a>
+          <a href="/bl2.html" class="nav-link active">
+            <span class="nav-icon">⚡</span>
+            <span class="nav-text">BL2 更新</span>
+          </a>
+        </div>
+      </nav>
+      
+      <div class="header-right"></div>
+    </header>
+    
+    <main class="main-content">
+      <div class="form-card">
+        <h2 class="form-title" id="form-title">BL2 更新</h2>
+        <p class="form-desc" id="form-desc">您将在这台设备上更新 BL2 引导加载程序</p>
+        
+        <form id="form">
+          <div id="upload-area">
+            <div class="upload-zone" id="upload-zone" onclick="document.getElementById('file').click()">
+              <div class="upload-icon">📂</div>
+              <div class="upload-title">点击选择文件</div>
+              <div class="upload-hint">支持 .bin, .img 等格式</div>
+            </div>
+            <input type="file" id="file" name="bl2" class="file-input" onchange="handleFileSelect(event)">
+          </div>
+          
+          <div id="file-selected" class="file-selected hidden">
+            <div class="file-selected-icon">📄</div>
+            <div class="file-selected-info">
+              <div class="file-selected-name" id="file-name"></div>
+              <div class="file-selected-size" id="file-size"></div>
+            </div>
+            <button type="button" class="file-selected-remove" onclick="removeFile()">✕</button>
+          </div>
+          
+          <div class="btn-group">
+            <button type="button" class="btn btn-primary" id="upload-btn" onclick="upload('bl2')" disabled>
+              <span>⬆️</span> 上传
+            </button>
+          </div>
+        </form>
+        
+        <div class="progress-bar hidden" id="bar">
+          <div class="progress-fill" style="width: 0%;">0%</div>
+        </div>
+        
+        <div id="size" class="info-grid hidden"></div>
+        
+        <div id="md5" class="hidden"></div>
+        
+        <div id="upgrade" class="text-center hidden" style="margin-top: 24px;">
+          <p class="text-success">bl2 已上传，请点击"更新"</p>
+          <a href="/flashing.html" class="btn btn-success">
+            <span>⚡</span> 更新
+          </a>
+        </div>
+        
+        <div class="warning-card">
+          <div class="warning-title">
+            <span>⚠️</span>
+            <span>警告</span>
+          </div>
+          <ul class="warning-list" id="warning-list">
+            <li>更新期间不要关闭设备电源</li>
+            <li>如果一切顺利，设备将重新启动</li>
+            <li>你可以上传任何你想要的东西，所以一定要为你的设备选择合适的 U-Boot</li>
+            <li>更新BL2是一项非常危险的操作，可能会损坏您的设备!</li>
+          </ul>
+        </div>
+      </div>
+    </main>
+    
+    <div id="version"></div>
+    <div class="footer">Copyright © 2026 bl-mt798x by MomoFlora</div>
+  </div>
+</body>
 </html>

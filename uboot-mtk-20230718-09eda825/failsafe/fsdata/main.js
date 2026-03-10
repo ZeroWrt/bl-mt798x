@@ -301,9 +301,6 @@ function updatePageTexts() {
     }
   });
 }
-    langLabel.textContent = t('language');
-  }
-}
 
 function ajax(opt) {
   var xmlhttp;
